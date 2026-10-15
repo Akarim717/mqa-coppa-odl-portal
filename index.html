@@ -1,0 +1,1442 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MQA COPPA: ODL Digital Reference Portal</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Inter & Plus Jakarta Sans -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet">
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        display: ['Plus Jakarta Sans', 'sans-serif'],
+                    },
+                    colors: {
+                        mqa: {
+                            50: '#f0f5ff',
+                            100: '#e0eafc',
+                            600: '#1e40af',
+                            700: '#1d3557',
+                            800: '#0f2537',
+                            900: '#091724',
+                            crimson: '#991b1b',
+                            gold: '#d97706',
+                            teal: '#0d9488'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Custom scrollbar and subtle utilities */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f5f9;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+        .glass-header {
+            background: rgba(255, 255, 255, 0.92);
+            backdrop-filter: blur(12px);
+        }
+        .hero-pattern {
+            background-color: #091724;
+            background-image: radial-gradient(at 80% 10%, rgba(13, 148, 136, 0.18) 0px, transparent 50%),
+                              radial-gradient(at 15% 85%, rgba(30, 64, 175, 0.25) 0px, transparent 50%);
+        }
+        input[type=range] {
+            accent-color: #0d9488;
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 font-sans antialiased selection:bg-teal-600 selection:text-white">
+
+    <!-- Top Sticky Navigation -->
+    <header class="sticky top-0 z-50 glass-header border-b border-slate-200/80 shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <!-- Brand -->
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-mqa-800 to-teal-700 flex items-center justify-center text-white font-display font-bold text-lg shadow-md">
+                        ODL
+                    </div>
+                    <div>
+                        <div class="flex items-center gap-2">
+                            <span class="font-display font-bold text-slate-900 text-base tracking-tight">COPPA: ODL</span>
+                            <span class="hidden sm:inline-block px-2 py-0.5 text-[11px] font-semibold bg-amber-100 text-amber-800 rounded-full border border-amber-200">2nd Ed. (Updated 2021)</span>
+                        </div>
+                        <p class="text-xs text-slate-500">Malaysian Qualifications Agency (MQA)</p>
+                    </div>
+                </div>
+
+                <!-- Desktop Nav Links -->
+                <nav class="hidden md:flex items-center space-x-1 lg:space-x-2 text-sm font-medium text-slate-600">
+                    <a href="#overview" class="px-3 py-2 rounded-lg hover:bg-slate-100 hover:text-slate-900 transition">Scope & Calculator</a>
+                    <a href="#seven-areas" class="px-3 py-2 rounded-lg hover:bg-slate-100 hover:text-slate-900 transition">7 Evaluation Areas</a>
+                    <a href="#lifecycle" class="px-3 py-2 rounded-lg hover:bg-slate-100 hover:text-slate-900 transition">Accreditation & POA</a>
+                    <a href="#tables-checklist" class="px-3 py-2 rounded-lg hover:bg-slate-100 hover:text-slate-900 transition">Tables & Self-Audit</a>
+                    <a href="#glossary" class="px-3 py-2 rounded-lg hover:bg-slate-100 hover:text-slate-900 transition">Glossary & Terms</a>
+                </nav>
+
+                <!-- Quick Action Button -->
+                <div class="flex items-center gap-2">
+                    <button onclick="openModal('forewordModal')" class="inline-flex items-center gap-1.5 px-3.5 py-2 text-xs font-semibold text-teal-800 bg-teal-50 hover:bg-teal-100 border border-teal-200 rounded-xl transition">
+                        <i data-lucide="book-open" class="w-3.5 h-3.5"></i>
+                        <span>Foreword & Info</span>
+                    </button>
+                    <button id="mobileMenuBtn" onclick="toggleMobileMenu()" class="md:hidden p-2 rounded-lg text-slate-600 hover:bg-slate-100">
+                        <i data-lucide="menu" class="w-5 h-5"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Menu Dropdown -->
+        <div id="mobileMenu" class="hidden md:hidden bg-white border-b border-slate-200 px-4 pt-2 pb-4 space-y-1 text-sm font-medium">
+            <a href="#overview" onclick="toggleMobileMenu()" class="block px-3 py-2 rounded-lg hover:bg-slate-100">Scope & Eligibility Calculator</a>
+            <a href="#seven-areas" onclick="toggleMobileMenu()" class="block px-3 py-2 rounded-lg hover:bg-slate-100">7 Evaluation Areas (96 Standards)</a>
+            <a href="#lifecycle" onclick="toggleMobileMenu()" class="block px-3 py-2 rounded-lg hover:bg-slate-100">Accreditation Lifecycle & POA</a>
+            <a href="#tables-checklist" onclick="toggleMobileMenu()" class="block px-3 py-2 rounded-lg hover:bg-slate-100">Required Tables & Self-Audit</a>
+            <a href="#glossary" onclick="toggleMobileMenu()" class="block px-3 py-2 rounded-lg hover:bg-slate-100">Glossary & Abbreviations</a>
+        </div>
+    </header>
+
+    <!-- Hero Banner -->
+    <section class="hero-pattern text-white pt-12 pb-16 lg:pt-16 lg:pb-20 relative overflow-hidden">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="max-w-3xl">
+                <div class="inline-flex flex-wrap items-center gap-2 px-3 py-1.5 rounded-full bg-white/10 border border-white/15 text-teal-300 text-xs font-medium mb-6">
+                    <span class="w-2 h-2 rounded-full bg-teal-400 animate-pulse"></span>
+                    <span>First Edition 2012</span>
+                    <span class="text-white/30">•</span>
+                    <span>Second Edition Nov 2019</span>
+                    <span class="text-white/30">•</span>
+                    <span>Updated 24 June 2021</span>
+                </div>
+                <h1 class="font-display text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight leading-tight mb-5">
+                    Open and Distance Learning Programme Accreditation Code
+                </h1>
+                <p class="text-slate-300 text-base sm:text-lg leading-relaxed mb-8">
+                    An interactive reference guide for Higher Education Providers (HEPs) and Panels of Assessors (POA) on the <strong class="text-white font-semibold">Code of Practice for Programme Accreditation: Open and Distance Learning (COPPA: ODL)</strong> by the Malaysian Qualifications Agency.
+                </p>
+                <div class="flex flex-wrap gap-3">
+                    <a href="#seven-areas" class="inline-flex items-center gap-2 px-5 py-3 rounded-xl bg-teal-500 hover:bg-teal-400 text-slate-950 font-semibold text-sm transition shadow-lg shadow-teal-500/20">
+                        <span>Explore the 7 Evaluation Areas</span>
+                        <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                    </a>
+                    <a href="#overview" class="inline-flex items-center gap-2 px-5 py-3 rounded-xl bg-white/10 hover:bg-white/15 text-white font-medium text-sm border border-white/15 transition">
+                        <i data-lucide="calculator" class="w-4 h-4 text-teal-300"></i>
+                        <span>ODL Threshold Calculator</span>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Key Quantitative Benchmarks Grid -->
+            <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4 mt-12 pt-8 border-t border-white/10">
+                <div class="bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-4">
+                    <div class="text-teal-400 font-display text-2xl sm:text-3xl font-extrabold">&gt; 60%</div>
+                    <div class="text-xs font-semibold text-white mt-1 uppercase tracking-wider">ODL Courses</div>
+                    <p class="text-xs text-slate-400 mt-1">Minimum courses conducted via ODL to qualify as an ODL programme</p>
+                </div>
+                <div class="bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-4">
+                    <div class="text-amber-400 font-display text-2xl sm:text-3xl font-extrabold">&ge; 80%</div>
+                    <div class="text-xs font-semibold text-white mt-1 uppercase tracking-wider">Course SLT</div>
+                    <p class="text-xs text-slate-400 mt-1">Student Learning Time delivered via ODL mode per ODL course*</p>
+                </div>
+                <div class="bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-4">
+                    <div class="text-sky-400 font-display text-2xl sm:text-3xl font-extrabold">7 Areas</div>
+                    <div class="text-xs font-semibold text-white mt-1 uppercase tracking-wider">96 Standards</div>
+                    <p class="text-xs text-slate-400 mt-1">Evaluated across 149 Part C questions &amp; statements</p>
+                </div>
+                <div class="bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-4">
+                    <div class="text-emerald-400 font-display text-2xl sm:text-3xl font-extrabold">&ge; 60%</div>
+                    <div class="text-xs font-semibold text-white mt-1 uppercase tracking-wider">Full-Time Staff</div>
+                    <p class="text-xs text-slate-400 mt-1">Minimum full-time academic staff (inclusive of course coordinators)</p>
+                </div>
+                <div class="bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-4 col-span-2 sm:col-span-1">
+                    <div class="text-purple-400 font-display text-2xl sm:text-3xl font-extrabold">5 Years</div>
+                    <div class="text-xs font-semibold text-white mt-1 uppercase tracking-wider">Review Cycle</div>
+                    <p class="text-xs text-slate-400 mt-1">Max interval for Programme Self-Review (PSR) &amp; Compliance Evaluation</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Content Container -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-20">
+
+        <!-- SECTION 1: SCOPE, PILLARS & INTERACTIVE ODL CALCULATOR -->
+        <section id="overview" class="scroll-mt-24">
+            <div class="flex flex-col md:flex-row md:items-end justify-between mb-8 gap-4">
+                <div>
+                    <span class="text-xs font-bold uppercase tracking-wider text-teal-700 bg-teal-50 px-3 py-1 rounded-full border border-teal-200">Section 1 • Introduction &amp; Scope</span>
+                    <h2 class="font-display text-2xl sm:text-3xl font-bold text-slate-900 mt-2">Understanding ODL &amp; Programme Thresholds</h2>
+                </div>
+                <p class="text-sm text-slate-600 max-w-xl">
+                    ODL refers to the provision of flexible educational opportunities in terms of access and multiple modes of knowledge acquisition, anchored by student engagement.
+                </p>
+            </div>
+
+            <!-- 3 Pillars + Target HEPs -->
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-10">
+                <!-- Pillar 1: Flexible -->
+                <div class="bg-white rounded-2xl p-6 border border-slate-200/80 shadow-sm hover:shadow-md transition">
+                    <div class="w-11 h-11 rounded-xl bg-teal-50 text-teal-700 flex items-center justify-center mb-4">
+                        <i data-lucide="compass" class="w-6 h-6"></i>
+                    </div>
+                    <h3 class="font-display font-bold text-lg text-slate-900 mb-2">1. Flexible</h3>
+                    <p class="text-sm text-slate-600 leading-relaxed">
+                        The availability of choices for educational endeavours <strong class="text-slate-800">anywhere, anytime and anyhow</strong>, supporting continual skills upgrading and reskilling.
+                    </p>
+                </div>
+
+                <!-- Pillar 2: Access -->
+                <div class="bg-white rounded-2xl p-6 border border-slate-200/80 shadow-sm hover:shadow-md transition">
+                    <div class="w-11 h-11 rounded-xl bg-blue-50 text-blue-700 flex items-center justify-center mb-4">
+                        <i data-lucide="globe-2" class="w-6 h-6"></i>
+                    </div>
+                    <h3 class="font-display font-bold text-lg text-slate-900 mb-2">2. Access</h3>
+                    <p class="text-sm text-slate-600 leading-relaxed">
+                        Opportunity made available to all, <strong class="text-slate-800">freeing learners from constraints of time and place</strong> and fulfilling fundamental rights to learning.
+                    </p>
+                </div>
+
+                <!-- Pillar 3: Multiple Modes -->
+                <div class="bg-white rounded-2xl p-6 border border-slate-200/80 shadow-sm hover:shadow-md transition">
+                    <div class="w-11 h-11 rounded-xl bg-indigo-50 text-indigo-700 flex items-center justify-center mb-4">
+                        <i data-lucide="layers" class="w-6 h-6"></i>
+                    </div>
+                    <h3 class="font-display font-bold text-lg text-slate-900 mb-2">3. Multiple Modes</h3>
+                    <p class="text-sm text-slate-600 leading-relaxed">
+                        Use of <strong class="text-slate-800">various delivery systems and learning resources</strong>—self-instructional materials (SIM), synchronous &amp; asynchronous e-learning platforms.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Interactive ODL Eligibility & SLT Calculator -->
+            <div class="bg-white rounded-3xl border border-slate-200 shadow-sm overflow-hidden">
+                <div class="bg-slate-900 text-white px-6 py-5 sm:px-8 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                    <div>
+                        <div class="flex items-center gap-2 text-teal-400 text-xs font-semibold uppercase tracking-wider">
+                            <i data-lucide="sliders" class="w-4 h-4"></i>
+                            <span>Interactive Compliance Simulator</span>
+                        </div>
+                        <h3 class="font-display text-lg sm:text-xl font-bold mt-1">COPPA: ODL Programme &amp; Course Threshold Calculator</h3>
+                    </div>
+                    <div class="text-xs text-slate-300 bg-white/10 px-3.5 py-2 rounded-xl border border-white/10">
+                        Serves: <span class="text-white font-semibold">Dedicated ODL HEPs</span> • <span class="text-white font-semibold">Dual Mode HEPs</span> • <span class="text-white font-semibold">Conventional HEPs</span>
+                    </div>
+                </div>
+
+                <div class="p-6 sm:p-8 grid grid-cols-1 lg:grid-cols-2 gap-8 divide-y lg:divide-y-0 lg:divide-x divide-slate-200">
+                    <!-- Left: Programme-Level Threshold (>60% Courses) -->
+                    <div class="space-y-5">
+                        <div class="flex items-start justify-between gap-4">
+                            <div>
+                                <span class="text-xs font-bold uppercase text-slate-400">Step 1: Programme Level</span>
+                                <h4 class="font-display font-bold text-slate-900 text-base mt-0.5">Programme ODL Course Ratio (&gt; 60% Rule)</h4>
+                                <p class="text-xs text-slate-500 mt-1">A programme of study is deemed an ODL programme if <strong>more than 60%</strong> of its courses are conducted via ODL.</p>
+                            </div>
+                            <span id="progStatusBadge" class="shrink-0 px-3 py-1 rounded-full text-xs font-bold bg-emerald-100 text-emerald-800 border border-emerald-200">
+                                Qualifies as ODL
+                            </span>
+                        </div>
+
+                        <div class="space-y-4 bg-slate-50 p-4 rounded-2xl border border-slate-200/70">
+                            <div>
+                                <div class="flex justify-between text-xs font-semibold mb-1.5">
+                                    <label for="totalCoursesInput" class="text-slate-700">Total Courses in Programme:</label>
+                                    <span id="totalCoursesVal" class="text-slate-900 font-bold">40 Courses</span>
+                                </div>
+                                <input id="totalCoursesInput" type="range" min="5" max="60" value="40" oninput="updateODLCalculator()" class="w-full cursor-pointer">
+                            </div>
+
+                            <div>
+                                <div class="flex justify-between text-xs font-semibold mb-1.5">
+                                    <label for="odlCoursesInput" class="text-slate-700">Courses Delivered via ODL Mode:</label>
+                                    <span id="odlCoursesVal" class="text-teal-700 font-bold">28 Courses</span>
+                                </div>
+                                <input id="odlCoursesInput" type="range" min="0" max="60" value="28" oninput="updateODLCalculator()" class="w-full cursor-pointer">
+                            </div>
+                        </div>
+
+                        <div class="flex items-center justify-between pt-2">
+                            <div>
+                                <div class="text-xs text-slate-500">Calculated ODL Course Share</div>
+                                <div id="progPercentText" class="font-display text-2xl font-extrabold text-slate-900">70.0%</div>
+                            </div>
+                            <div class="text-right text-xs text-slate-500 max-w-xs" id="progAdviceText">
+                                Exceeds the &gt;60% threshold (minimum 25 of 40 courses required).
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Right: Course-Level Threshold (>=80% SLT) -->
+                    <div class="pt-6 lg:pt-0 lg:pl-8 space-y-5">
+                        <div class="flex items-start justify-between gap-4">
+                            <div>
+                                <span class="text-xs font-bold uppercase text-slate-400">Step 2: Individual Course Level</span>
+                                <h4 class="font-display font-bold text-slate-900 text-base mt-0.5">Student Learning Time (SLT) Ratio (&ge; 80% Rule)</h4>
+                                <p class="text-xs text-slate-500 mt-1">At least <strong>80% of the Course SLT</strong> must be delivered via ODL mode (SIM, synchronous/asynchronous e-learning).</p>
+                            </div>
+                            <span id="courseStatusBadge" class="shrink-0 px-3 py-1 rounded-full text-xs font-bold bg-emerald-100 text-emerald-800 border border-emerald-200">
+                                ODL Course Valid
+                            </span>
+                        </div>
+
+                        <div class="space-y-4 bg-slate-50 p-4 rounded-2xl border border-slate-200/70">
+                            <div>
+                                <div class="flex justify-between text-xs font-semibold mb-1.5">
+                                    <label for="totalSltInput" class="text-slate-700">Total Course SLT (Hours):</label>
+                                    <span id="totalSltVal" class="text-slate-900 font-bold">120 Hours (3 Credits)</span>
+                                </div>
+                                <input id="totalSltInput" type="range" min="40" max="240" step="10" value="120" oninput="updateODLCalculator()" class="w-full cursor-pointer">
+                            </div>
+
+                            <div>
+                                <div class="flex justify-between text-xs font-semibold mb-1.5">
+                                    <label for="odlSltInput" class="text-slate-700">SLT via Open &amp; Distance Mode (Hours):</label>
+                                    <span id="odlSltVal" class="text-teal-700 font-bold">102 Hours</span>
+                                </div>
+                                <input id="odlSltInput" type="range" min="0" max="240" step="2" value="102" oninput="updateODLCalculator()" class="w-full cursor-pointer">
+                            </div>
+
+                            <!-- Footnote 1 Exemption Toggle -->
+                            <label class="flex items-center gap-2.5 pt-1 cursor-pointer select-none">
+                                <input id="exemptionCheck" type="checkbox" onchange="updateODLCalculator()" class="w-4 h-4 rounded text-teal-600 focus:ring-teal-500">
+                                <span class="text-xs text-slate-700 font-medium">Apply Regulatory / Clinical Physical Face-to-Face Exemption (Footnote 1)</span>
+                            </label>
+                        </div>
+
+                        <div class="flex items-center justify-between pt-2">
+                            <div>
+                                <div class="text-xs text-slate-500">Course ODL SLT Percentage</div>
+                                <div id="coursePercentText" class="font-display text-2xl font-extrabold text-slate-900">85.0%</div>
+                            </div>
+                            <div class="text-right text-xs text-slate-500 max-w-xs" id="courseAdviceText">
+                                Meets the &ge;80% ODL SLT requirement (minimum 96 hrs of 120 hrs).
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 2, 3 & 6: THE 7 AREAS OF EVALUATION INTERACTIVE EXPLORER -->
+        <section id="seven-areas" class="scroll-mt-24">
+            <div class="flex flex-col lg:flex-row lg:items-end justify-between mb-8 gap-4">
+                <div>
+                    <span class="text-xs font-bold uppercase tracking-wider text-blue-700 bg-blue-50 px-3 py-1 rounded-full border border-blue-200">Sections 2, 3 &amp; 6 • Core Quality Framework</span>
+                    <h2 class="font-display text-2xl sm:text-3xl font-bold text-slate-900 mt-2">The 7 Areas of Evaluation Explorer</h2>
+                </div>
+                <p class="text-sm text-slate-600 max-w-xl">
+                    Select any evaluation area below to inspect its <strong>Standards (Section 2)</strong>, <strong>HEP Submission Requirements (Section 3 Part C)</strong>, and <strong>Panel of Assessors Evaluation Guidelines (Section 6)</strong>.
+                </p>
+            </div>
+
+            <!-- Summary Distribution Bar -->
+            <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm mb-8">
+                <div class="flex flex-wrap items-center justify-between gap-2 mb-3">
+                    <span class="text-xs font-bold uppercase tracking-wider text-slate-500">Distribution of 96 Standards &amp; 149 Part C Questions Across 7 Areas</span>
+                    <span class="text-xs font-semibold text-slate-700">Click a bar or tab below to filter</span>
+                </div>
+                <div class="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-7 gap-2.5" id="areaSelectorGrid">
+                    <!-- Rendered dynamically by JS -->
+                </div>
+            </div>
+
+            <!-- Active Area Detail Card -->
+            <div id="activeAreaContainer" class="bg-white rounded-3xl border border-slate-200 shadow-sm overflow-hidden transition-all">
+                <!-- Populated dynamically via JS -->
+            </div>
+
+            <!-- 5 Clusters of MQF Learning Outcomes Callout (Area 1.1.4) -->
+            <div class="mt-8 bg-gradient-to-r from-slate-900 via-mqa-800 to-slate-900 rounded-2xl p-6 sm:p-8 text-white shadow-md">
+                <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
+                    <div>
+                        <span class="text-xs font-bold uppercase tracking-wider text-teal-400">Standard 1.1.4 &amp; Outcome-Based Education (OBE)</span>
+                        <h3 class="font-display text-lg sm:text-xl font-bold mt-1">The Five Clusters of MQF Learning Outcomes</h3>
+                    </div>
+                    <span class="text-xs text-slate-300 bg-white/10 px-3 py-1.5 rounded-lg border border-white/10">
+                        Constructive Alignment with Programme Educational Objectives (PEO)
+                    </span>
+                </div>
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
+                    <div class="bg-white/5 border border-white/10 rounded-xl p-4">
+                        <div class="text-teal-400 font-bold text-xs uppercase mb-1">Cluster i</div>
+                        <div class="font-display font-bold text-sm">Knowledge &amp; Understanding</div>
+                        <p class="text-xs text-slate-300 mt-1.5">Mastery of subject principles, theories, and current developments in the discipline.</p>
+                    </div>
+                    <div class="bg-white/5 border border-white/10 rounded-xl p-4">
+                        <div class="text-teal-400 font-bold text-xs uppercase mb-1">Cluster ii</div>
+                        <div class="font-display font-bold text-sm">Cognitive Skills</div>
+                        <p class="text-xs text-slate-300 mt-1.5">Critical thinking, problem-solving, and evidence-based decision-making.</p>
+                    </div>
+                    <div class="bg-white/10 border border-teal-400/40 rounded-xl p-4 sm:col-span-2 lg:col-span-1">
+                        <div class="text-amber-300 font-bold text-xs uppercase mb-1">Cluster iii (6 Focus Areas)</div>
+                        <div class="font-display font-bold text-sm">Functional Work Skills</div>
+                        <p class="text-xs text-slate-200 mt-1.5 leading-relaxed">
+                            (a) Practical, (b) Interpersonal, (c) Communication, (d) Digital, (e) Numeracy, (f) Leadership, autonomy &amp; responsibility.
+                        </p>
+                    </div>
+                    <div class="bg-white/5 border border-white/10 rounded-xl p-4">
+                        <div class="text-teal-400 font-bold text-xs uppercase mb-1">Cluster iv</div>
+                        <div class="font-display font-bold text-sm">Personal &amp; Entrepreneurial</div>
+                        <p class="text-xs text-slate-300 mt-1.5">Lifelong learning quest, self-directed study, and entrepreneurial mindset.</p>
+                    </div>
+                    <div class="bg-white/5 border border-white/10 rounded-xl p-4">
+                        <div class="text-teal-400 font-bold text-xs uppercase mb-1">Cluster v</div>
+                        <div class="font-display font-bold text-sm">Ethics &amp; Professionalism</div>
+                        <p class="text-xs text-slate-300 mt-1.5">Integrity, active citizenship, and societal advancement within national aspirations.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 3, 4 & 5: ACCREDITATION LIFECYCLE, SUBMISSIONS & PANEL OF ASSESSORS -->
+        <section id="lifecycle" class="scroll-mt-24">
+            <div class="flex flex-col md:flex-row md:items-end justify-between mb-8 gap-4">
+                <div>
+                    <span class="text-xs font-bold uppercase tracking-wider text-purple-700 bg-purple-50 px-3 py-1 rounded-full border border-purple-200">Sections 3, 4 &amp; 5 • Process &amp; Governance</span>
+                    <h2 class="font-display text-2xl sm:text-3xl font-bold text-slate-900 mt-2">Accreditation Lifecycle &amp; External Evaluation</h2>
+                </div>
+                <p class="text-sm text-slate-600 max-w-xl">
+                    Programme accreditation progresses through three distinct stages of evaluation—Provisional, Full, and Compliance—supported by Internal Self-Review and an independent Panel of Assessors (POA).
+                </p>
+            </div>
+
+            <!-- 3 Stages of Accreditation Cards -->
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-12">
+                <!-- Stage 1 -->
+                <div class="bg-white rounded-2xl p-6 border-2 border-slate-200 hover:border-teal-500 transition relative flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center justify-between mb-4">
+                            <span class="px-3 py-1 rounded-full text-xs font-bold bg-teal-50 text-teal-800 border border-teal-200">Stage 1 • Pre-Launch</span>
+                            <span class="font-mono text-xs font-bold text-slate-500">MQA-01-ODL</span>
+                        </div>
+                        <h3 class="font-display font-bold text-xl text-slate-900 mb-2">Provisional Accreditation</h3>
+                        <p class="text-sm text-slate-600 mb-4 leading-relaxed">
+                            Determines whether a proposed ODL programme meets the minimum quality standards <strong>prior to its launch</strong>. Emphasises curriculum design and preparatory arrangements.
+                        </p>
+                        <ul class="space-y-2 text-xs text-slate-700 mb-6">
+                            <li class="flex items-start gap-2">
+                                <i data-lucide="check-circle-2" class="w-4 h-4 text-teal-600 shrink-0 mt-0.5"></i>
+                                <span>Requires <strong>Part A</strong> (HEP Profile), <strong>Part B</strong> (Programme Description), and <strong>Part C</strong> (Programme Standards).</span>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <i data-lucide="check-circle-2" class="w-4 h-4 text-teal-600 shrink-0 mt-0.5"></i>
+                                <span>Must include <strong>Self-Instructional Materials (SIM) of Semester 1</strong> (Section 6, 3.1.2.5b).</span>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="pt-4 border-t border-slate-100 flex items-center justify-between text-xs">
+                        <span class="text-slate-500">Outcome Registry:</span>
+                        <span class="font-semibold text-slate-800">List of Provisionally Accredited Programmes</span>
+                    </div>
+                </div>
+
+                <!-- Stage 2 -->
+                <div class="bg-white rounded-2xl p-6 border-2 border-slate-200 hover:border-blue-600 transition relative flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center justify-between mb-4">
+                            <span class="px-3 py-1 rounded-full text-xs font-bold bg-blue-50 text-blue-800 border border-blue-200">Stage 2 • Operational</span>
+                            <span class="font-mono text-xs font-bold text-slate-500">MQA-02-ODL</span>
+                        </div>
+                        <h3 class="font-display font-bold text-xl text-slate-900 mb-2">Full Accreditation</h3>
+                        <p class="text-sm text-slate-600 mb-4 leading-relaxed">
+                            Ascertains that teaching, learning, support systems, and all related activities of a provisionally accredited programme meet the quality standards in practice.
+                        </p>
+                        <ul class="space-y-2 text-xs text-slate-700 mb-6">
+                            <li class="flex items-start gap-2">
+                                <i data-lucide="check-circle-2" class="w-4 h-4 text-blue-600 shrink-0 mt-0.5"></i>
+                                <span>Requires updated <strong>Part A, B, C</strong> plus <strong>Part D: Programme Self-Review Report (PSRR)</strong>.</span>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <i data-lucide="check-circle-2" class="w-4 h-4 text-blue-600 shrink-0 mt-0.5"></i>
+                                <span>Must provide <strong>SIM for ALL courses</strong> in the programme (Section 6, 3.1.2.5b).</span>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="pt-4 border-t border-slate-100 flex items-center justify-between text-xs">
+                        <span class="text-slate-500">Outcome Registry:</span>
+                        <span class="font-semibold text-blue-700">Malaysian Qualifications Register (MQR)</span>
+                    </div>
+                </div>
+
+                <!-- Stage 3 -->
+                <div class="bg-white rounded-2xl p-6 border-2 border-slate-200 hover:border-amber-500 transition relative flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center justify-between mb-4">
+                            <span class="px-3 py-1 rounded-full text-xs font-bold bg-amber-50 text-amber-800 border border-amber-200">Stage 3 • Every 5 Years</span>
+                            <span class="font-mono text-xs font-bold text-slate-500">MQA-04</span>
+                        </div>
+                        <h3 class="font-display font-bold text-xl text-slate-900 mb-2">Compliance Evaluation</h3>
+                        <p class="text-sm text-slate-600 mb-4 leading-relaxed">
+                            Monitors and ensures the maintenance and enhancement of fully accredited programmes. Carried out <strong>at least once in five years</strong>.
+                        </p>
+                        <ul class="space-y-2 text-xs text-slate-700 mb-6">
+                            <li class="flex items-start gap-2">
+                                <i data-lucide="check-circle-2" class="w-4 h-4 text-amber-600 shrink-0 mt-0.5"></i>
+                                <span>HEP conducts periodic <strong>Programme Self-Review (PSR)</strong> and submits MQA-04 with endorsed evidence.</span>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <i data-lucide="alert-triangle" class="w-4 h-4 text-rose-600 shrink-0 mt-0.5"></i>
+                                <span>Failure to maintain quality may lead to revocation and a <strong>cessation date recorded in MQR</strong>.</span>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="pt-4 border-t border-slate-100 flex items-center justify-between text-xs">
+                        <span class="text-slate-500">Outcome Registry:</span>
+                        <span class="font-semibold text-slate-800">Continued MQR Registration</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 5 Parties in External Evaluation & PSR 5 Questions -->
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+                <!-- Left 7 Cols: 5 Parties to the Accreditation Process -->
+                <div class="lg:col-span-7 bg-white rounded-2xl p-6 sm:p-8 border border-slate-200 shadow-sm">
+                    <div class="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-slate-400 mb-1">
+                        <i data-lucide="users" class="w-4 h-4 text-teal-600"></i>
+                        <span>Section 4.3.1 &amp; Section 5</span>
+                    </div>
+                    <h3 class="font-display text-xl font-bold text-slate-900 mb-4">The 5 Key Parties in Programme Accreditation</h3>
+                    <div class="space-y-3">
+                        <div class="p-4 rounded-xl bg-slate-50 border border-slate-200/70">
+                            <div class="font-display font-bold text-sm text-slate-900 flex items-center justify-between">
+                                <span>1. MQA Officer</span>
+                                <span class="text-[11px] font-medium px-2 py-0.5 bg-slate-200 text-slate-700 rounded">Coordinator &amp; Secretariat</span>
+                            </div>
+                            <p class="text-xs text-slate-600 mt-1">Assigned for every application; coordinates with the HEP, accompanies POA during the evaluation visit, and provides administrative &amp; reporting support.</p>
+                        </div>
+
+                        <div class="p-4 rounded-xl bg-slate-50 border border-slate-200/70">
+                            <div class="font-display font-bold text-sm text-slate-900 flex items-center justify-between">
+                                <span>2. HEP Liaison Officer</span>
+                                <span class="text-[11px] font-medium px-2 py-0.5 bg-slate-200 text-slate-700 rounded">HEP Resource Person</span>
+                            </div>
+                            <p class="text-xs text-slate-600 mt-1">Appointed by the HEP to coordinate with the MQA officer, arrange the tentative schedule for the evaluation visit, and inform all relevant stakeholders of the audit plan.</p>
+                        </div>
+
+                        <div class="p-4 rounded-xl bg-slate-50 border border-slate-200/70">
+                            <div class="font-display font-bold text-sm text-slate-900 flex items-center justify-between">
+                                <span>3. Representatives of the HEP</span>
+                                <span class="text-[11px] font-medium px-2 py-0.5 bg-slate-200 text-slate-700 rounded">Management, Staff &amp; Students</span>
+                            </div>
+                            <p class="text-xs text-slate-600 mt-1">Provide evidence and walkthroughs of facilities/LMS. Academic staff are interviewed regarding staff development, workload distribution, PEO/PLO understanding, and academic culture.</p>
+                        </div>
+
+                        <div class="p-4 rounded-xl bg-teal-50/60 border border-teal-200">
+                            <div class="font-display font-bold text-sm text-teal-950 flex items-center justify-between">
+                                <span>4. Chairperson of the Panel of Assessors (POA)</span>
+                                <span class="text-[11px] font-semibold px-2 py-0.5 bg-teal-100 text-teal-800 rounded">Team Facilitator &amp; Lead Author</span>
+                            </div>
+                            <p class="text-xs text-slate-700 mt-1">Experienced assessor who fosters critical professional discussion, presents the <strong>Oral Exit Report</strong>, and collates member inputs into an evidence-based, coherent Final Evaluation Report.</p>
+                        </div>
+
+                        <div class="p-4 rounded-xl bg-teal-50/60 border border-teal-200">
+                            <div class="font-display font-bold text-sm text-teal-950 flex items-center justify-between">
+                                <span>5. Members of the Panel of Assessors (POA)</span>
+                                <span class="text-[11px] font-semibold px-2 py-0.5 bg-teal-100 text-teal-800 rounded">Subject &amp; ODL QA Experts</span>
+                            </div>
+                            <p class="text-xs text-slate-700 mt-1">Selected for subject expertise, curriculum design, and QA skills. Assess compliance with MQF and the 7 areas, verify PSRR &amp; improvement plans, and reach objective, rational judgment free of conflict of interest.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right 5 Cols: PSR 5 Guiding Questions & Appeals Process -->
+                <div class="lg:col-span-5 flex flex-col justify-between gap-6">
+                    <!-- PSR 5 Questions -->
+                    <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm">
+                        <div class="text-xs font-bold uppercase tracking-wider text-blue-700 mb-1">Section 4.1 • Programme Self-Review (PSR)</div>
+                        <h3 class="font-display text-lg font-bold text-slate-900 mb-3">5 Guiding Questions for Internal Quality Audit</h3>
+                        <p class="text-xs text-slate-600 mb-4">When addressing the seven areas of evaluation in a Programme Self-Review Report (PSRR), departments must consider:</p>
+                        <ol class="space-y-2.5 text-xs text-slate-700">
+                            <li class="flex gap-2.5 p-2.5 rounded-lg bg-slate-50 border border-slate-200/60">
+                                <span class="font-bold text-blue-700">i.</span>
+                                <span>What actions are undertaken in relation to these quality areas? Why were these actions chosen? Are they appropriate?</span>
+                            </li>
+                            <li class="flex gap-2.5 p-2.5 rounded-lg bg-slate-50 border border-slate-200/60">
+                                <span class="font-bold text-blue-700">ii.</span>
+                                <span>How do we check their effectiveness? What performance indicators do we have, and are they appropriate?</span>
+                            </li>
+                            <li class="flex gap-2.5 p-2.5 rounded-lg bg-slate-50 border border-slate-200/60">
+                                <span class="font-bold text-blue-700">iii.</span>
+                                <span>What do we do as a result of the review?</span>
+                            </li>
+                            <li class="flex gap-2.5 p-2.5 rounded-lg bg-slate-50 border border-slate-200/60">
+                                <span class="font-bold text-blue-700">iv.</span>
+                                <span>Can we measure the degree of achievements? What are the actual outcomes?</span>
+                            </li>
+                            <li class="flex gap-2.5 p-2.5 rounded-lg bg-slate-50 border border-slate-200/60">
+                                <span class="font-bold text-blue-700">v.</span>
+                                <span>Can we improve on the existing actions, even on those that are already effective?</span>
+                            </li>
+                        </ol>
+                    </div>
+
+                    <!-- Section 4.6 Appeal Card -->
+                    <div class="bg-amber-50/70 rounded-2xl p-6 border border-amber-200/80">
+                        <div class="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-amber-800 mb-1">
+                            <i data-lucide="scale" class="w-4 h-4"></i>
+                            <span>Section 4.6 • Appeals Under MQA Act 679</span>
+                        </div>
+                        <h3 class="font-display text-base font-bold text-slate-900 mb-2">Right to Appeal Accreditation Decisions</h3>
+                        <p class="text-xs text-slate-700 leading-relaxed mb-3">
+                            An HEP can appeal against the decision of the MQA Accreditation Committee or professional bodies based on factual contents, substantive errors, or substantive inconsistencies between the oral exit report, final evaluation report, and committee decision.
+                        </p>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 text-xs">
+                            <div class="bg-white p-3 rounded-xl border border-amber-200">
+                                <div class="font-bold text-slate-900">Non-Professional Programmes</div>
+                                <p class="text-slate-600 mt-0.5">Submitted to Department of Higher Education, <strong>Ministry of Education (MOE)</strong> for consideration by the Minister of Education.</p>
+                            </div>
+                            <div class="bg-white p-3 rounded-xl border border-amber-200">
+                                <div class="font-bold text-slate-900">Professional Programmes</div>
+                                <p class="text-slate-600 mt-0.5">Submitted to the professional body through MQA for consideration by the <strong>Appellate Body</strong> set up by the respective body.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 3 TABLES & INTERACTIVE SELF-AUDIT CHECKLIST -->
+        <section id="tables-checklist" class="scroll-mt-24">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+                <!-- Left 6 Cols: List of Required Tables in MQA-01-ODL / MQA-02-ODL -->
+                <div class="lg:col-span-6 bg-white rounded-3xl p-6 sm:p-8 border border-slate-200 shadow-sm">
+                    <span class="text-xs font-bold uppercase tracking-wider text-teal-700 bg-teal-50 px-3 py-1 rounded-full border border-teal-200">Page xii &amp; Section 3.3</span>
+                    <h3 class="font-display text-xl font-bold text-slate-900 mt-3 mb-2">Mandatory Submission Tables (Tables 1–8)</h3>
+                    <p class="text-xs text-slate-600 mb-5">
+                        When preparing Part C of <strong>MQA-01-ODL</strong> or <strong>MQA-02-ODL</strong>, the HEP must furnish structured data across eight standardised tables:
+                    </p>
+                    <div class="space-y-2.5">
+                        <div class="flex items-center justify-between p-3 rounded-xl bg-slate-50 border border-slate-200/70">
+                            <div class="flex items-center gap-3">
+                                <span class="w-8 h-8 rounded-lg bg-mqa-800 text-white font-mono text-xs font-bold flex items-center justify-center shrink-0">T1</span>
+                                <div>
+                                    <div class="text-xs font-bold text-slate-900">Matrix of PLO against PEO</div>
+                                    <div class="text-[11px] text-slate-500">Area 1 • Programme Learning Outcomes vs. Educational Objectives</div>
+                                </div>
+                            </div>
+                            <span class="text-[11px] font-mono text-slate-500 shrink-0">p. 39</span>
+                        </div>
+
+                        <div class="flex items-center justify-between p-3 rounded-xl bg-slate-50 border border-slate-200/70">
+                            <div class="flex items-center gap-3">
+                                <span class="w-8 h-8 rounded-lg bg-mqa-800 text-white font-mono text-xs font-bold flex items-center justify-center shrink-0">T2</span>
+                                <div>
+                                    <div class="text-xs font-bold text-slate-900">Components of the Programme &amp; Credit Value</div>
+                                    <div class="text-[11px] text-slate-500">Area 1 • Core, elective, compulsory courses &amp; credit distribution</div>
+                                </div>
+                            </div>
+                            <span class="text-[11px] font-mono text-slate-500 shrink-0">p. 41</span>
+                        </div>
+
+                        <div class="flex items-center justify-between p-3 rounded-xl bg-slate-50 border border-slate-200/70">
+                            <div class="flex items-center gap-3">
+                                <span class="w-8 h-8 rounded-lg bg-mqa-800 text-white font-mono text-xs font-bold flex items-center justify-center shrink-0">T3</span>
+                                <div>
+                                    <div class="text-xs font-bold text-slate-900">Brief Description of Courses Offered</div>
+                                    <div class="text-[11px] text-slate-500">Area 1 • Synopsis &amp; modality of courses in the programme</div>
+                                </div>
+                            </div>
+                            <span class="text-[11px] font-mono text-slate-500 shrink-0">p. 41</span>
+                        </div>
+
+                        <div class="flex items-center justify-between p-3 rounded-xl bg-slate-50 border border-slate-200/70">
+                            <div class="flex items-center gap-3">
+                                <span class="w-8 h-8 rounded-lg bg-mqa-800 text-white font-mono text-xs font-bold flex items-center justify-center shrink-0">T4</span>
+                                <div>
+                                    <div class="text-xs font-bold text-slate-900">Course Information</div>
+                                    <div class="text-[11px] text-slate-500">Area 1 • Detailed SLT breakdown, learning outcomes, assessment</div>
+                                </div>
+                            </div>
+                            <span class="text-[11px] font-mono text-slate-500 shrink-0">p. 42</span>
+                        </div>
+
+                        <div class="flex items-center justify-between p-3 rounded-xl bg-slate-50 border border-slate-200/70">
+                            <div class="flex items-center gap-3">
+                                <span class="w-8 h-8 rounded-lg bg-mqa-800 text-white font-mono text-xs font-bold flex items-center justify-center shrink-0">T5</span>
+                                <div>
+                                    <div class="text-xs font-bold text-slate-900">Summary Information on Academic Staff (Course Coordinator)</div>
+                                    <div class="text-[11px] text-slate-500">Area 4 • Qualifications, full-time/part-time status (&ge;60% rule)</div>
+                                </div>
+                            </div>
+                            <span class="text-[11px] font-mono text-slate-500 shrink-0">p. 51</span>
+                        </div>
+
+                        <div class="flex items-center justify-between p-3 rounded-xl bg-slate-50 border border-slate-200/70">
+                            <div class="flex items-center gap-3">
+                                <span class="w-8 h-8 rounded-lg bg-mqa-800 text-white font-mono text-xs font-bold flex items-center justify-center shrink-0">T6</span>
+                                <div>
+                                    <div class="text-xs font-bold text-slate-900">List of Physical and Virtual Facilities Required</div>
+                                    <div class="text-[11px] text-slate-500">Area 5 • LMS, LCMS, labs, bandwidth, data storage &amp; regional centres</div>
+                                </div>
+                            </div>
+                            <span class="text-[11px] font-mono text-slate-500 shrink-0">p. 54</span>
+                        </div>
+
+                        <div class="flex items-center justify-between p-3 rounded-xl bg-slate-50 border border-slate-200/70">
+                            <div class="flex items-center gap-3">
+                                <span class="w-8 h-8 rounded-lg bg-mqa-800 text-white font-mono text-xs font-bold flex items-center justify-center shrink-0">T7</span>
+                                <div>
+                                    <div class="text-xs font-bold text-slate-900">Reference Materials Supporting the Programme</div>
+                                    <div class="text-[11px] text-slate-500">Area 5 • Digital library collections, e-journals, databases</div>
+                                </div>
+                            </div>
+                            <span class="text-[11px] font-mono text-slate-500 shrink-0">p. 55</span>
+                        </div>
+
+                        <div class="flex items-center justify-between p-3 rounded-xl bg-slate-50 border border-slate-200/70">
+                            <div class="flex items-center gap-3">
+                                <span class="w-8 h-8 rounded-lg bg-mqa-800 text-white font-mono text-xs font-bold flex items-center justify-center shrink-0">T8</span>
+                                <div>
+                                    <div class="text-xs font-bold text-slate-900">Administrative and Academic Support Staff</div>
+                                    <div class="text-[11px] text-slate-500">Area 6 • Technical, instructional design &amp; administrative personnel</div>
+                                </div>
+                            </div>
+                            <span class="text-[11px] font-mono text-slate-500 shrink-0">p. 58</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right 6 Cols: Interactive ODL Readiness Self-Audit Checklist -->
+                <div class="lg:col-span-6 bg-white rounded-3xl p-6 sm:p-8 border border-slate-200 shadow-sm flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center justify-between gap-2">
+                            <span class="text-xs font-bold uppercase tracking-wider text-emerald-700 bg-emerald-50 px-3 py-1 rounded-full border border-emerald-200">Interactive Readiness Tool</span>
+                            <button onclick="resetChecklist()" class="text-xs text-slate-500 hover:text-slate-800 underline">Reset All</button>
+                        </div>
+                        <h3 class="font-display text-xl font-bold text-slate-900 mt-3 mb-2">HEP ODL Accreditation Readiness Checklist</h3>
+                        <p class="text-xs text-slate-600 mb-4">
+                            Verify critical COPPA: ODL milestones before submitting MQA-01-ODL or MQA-02-ODL:
+                        </p>
+
+                        <!-- Progress Bar -->
+                        <div class="mb-5 bg-slate-100 rounded-full h-3 overflow-hidden p-0.5">
+                            <div id="checklistProgress" class="bg-gradient-to-r from-teal-500 to-emerald-500 h-full rounded-full transition-all duration-300" style="width: 30%"></div>
+                        </div>
+
+                        <div class="space-y-2.5" id="checklistContainer">
+                            <!-- Populated by JS -->
+                        </div>
+                    </div>
+
+                    <div class="mt-6 pt-4 border-t border-slate-100 flex items-center justify-between">
+                        <span id="checklistSummaryText" class="text-xs font-semibold text-slate-700">3 of 10 Readiness Criteria Checked</span>
+                        <span id="checklistBadge" class="px-3 py-1 rounded-full text-xs font-bold bg-amber-100 text-amber-800">In Preparation</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- GLOSSARY & ABBREVIATIONS DIRECTORY -->
+        <section id="glossary" class="scroll-mt-24">
+            <div class="flex flex-col md:flex-row md:items-end justify-between mb-8 gap-4">
+                <div>
+                    <span class="text-xs font-bold uppercase tracking-wider text-slate-700 bg-slate-200/80 px-3 py-1 rounded-full">Pages iii – xi • Official Definitions</span>
+                    <h2 class="font-display text-2xl sm:text-3xl font-bold text-slate-900 mt-2">Searchable Glossary &amp; Abbreviations</h2>
+                </div>
+                <!-- Abbreviations Quick Bar -->
+                <div class="flex flex-wrap gap-1.5">
+                    <span class="px-2.5 py-1 rounded-lg bg-white border border-slate-200 text-xs font-semibold text-slate-700" title="Accreditation of Prior Experiential Learning"><strong>APEL</strong>: Prior Experiential Learning</span>
+                    <span class="px-2.5 py-1 rounded-lg bg-white border border-slate-200 text-xs font-semibold text-slate-700" title="Continuous Professional Development"><strong>CPD</strong>: Cont. Prof. Dev.</span>
+                    <span class="px-2.5 py-1 rounded-lg bg-white border border-slate-200 text-xs font-semibold text-slate-700" title="Learning Content Management System"><strong>LCMS / LMS</strong></span>
+                    <span class="px-2.5 py-1 rounded-lg bg-white border border-slate-200 text-xs font-semibold text-slate-700" title="Malaysian Qualifications Framework"><strong>MQF</strong></span>
+                    <span class="px-2.5 py-1 rounded-lg bg-white border border-slate-200 text-xs font-semibold text-slate-700" title="Regional Centre"><strong>RC</strong>: Regional Centre</span>
+                </div>
+            </div>
+
+            <!-- Search & Category Filter Bar -->
+            <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm mb-6 flex flex-col sm:flex-row gap-3">
+                <div class="relative flex-1">
+                    <i data-lucide="search" class="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2"></i>
+                    <input id="glossarySearch" type="text" oninput="renderGlossary()" placeholder="Search official COPPA: ODL terms (e.g., APEL, Moderator, SIM, Face-to-face, Regional Centre)..." class="w-full pl-10 pr-4 py-2.5 rounded-xl bg-slate-50 border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-teal-500 focus:bg-white transition">
+                </div>
+                <div class="flex gap-1.5 overflow-x-auto pb-1 sm:pb-0" id="glossaryCategoryBtns">
+                    <button onclick="setGlossaryCat('All')" data-cat="All" class="gloss-cat-btn px-3.5 py-2 rounded-xl text-xs font-semibold bg-slate-900 text-white shrink-0 transition">All Terms</button>
+                    <button onclick="setGlossaryCat('ODL & Delivery')" data-cat="ODL & Delivery" class="gloss-cat-btn px-3.5 py-2 rounded-xl text-xs font-semibold bg-slate-100 text-slate-700 hover:bg-slate-200 shrink-0 transition">ODL &amp; Delivery</button>
+                    <button onclick="setGlossaryCat('Roles & Staff')" data-cat="Roles & Staff" class="gloss-cat-btn px-3.5 py-2 rounded-xl text-xs font-semibold bg-slate-100 text-slate-700 hover:bg-slate-200 shrink-0 transition">Roles &amp; Staff</button>
+                    <button onclick="setGlossaryCat('QA & Accreditation')" data-cat="QA & Accreditation" class="gloss-cat-btn px-3.5 py-2 rounded-xl text-xs font-semibold bg-slate-100 text-slate-700 hover:bg-slate-200 shrink-0 transition">QA &amp; Accreditation</button>
+                    <button onclick="setGlossaryCat('Assessment & Curriculum')" data-cat="Assessment & Curriculum" class="gloss-cat-btn px-3.5 py-2 rounded-xl text-xs font-semibold bg-slate-100 text-slate-700 hover:bg-slate-200 shrink-0 transition">Assessment &amp; Curriculum</button>
+                </div>
+            </div>
+
+            <!-- Glossary Cards Grid -->
+            <div id="glossaryGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                <!-- Populated dynamically by JS -->
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer with Official MQA Contact Info from Page 1 -->
+    <footer class="bg-slate-900 text-slate-400 py-12 border-t border-slate-800 mt-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div>
+                <div class="flex items-center gap-3 mb-3">
+                    <div class="w-8 h-8 rounded-lg bg-teal-600 text-white font-display font-bold flex items-center justify-center text-sm">MQA</div>
+                    <span class="font-display font-bold text-white text-base">Malaysian Qualifications Agency</span>
+                </div>
+                <p class="text-xs leading-relaxed text-slate-400">
+                    Code of Practice for Programme Accreditation: Open and Distance Learning (COPPA: ODL).<br>
+                    First Edition 2012 • Second Edition November 2019 (Updated: 24 June 2021).
+                </p>
+            </div>
+
+            <div>
+                <h4 class="text-xs font-bold uppercase tracking-wider text-white mb-3">Official Address</h4>
+                <p class="text-xs leading-relaxed">
+                    Mercu MQA<br>
+                    No. 3539, Jalan Teknokrat 7, Cyber 5<br>
+                    63000 Cyberjaya, Selangor Darul Ehsan, Malaysia
+                </p>
+            </div>
+
+            <div>
+                <h4 class="text-xs font-bold uppercase tracking-wider text-white mb-3">Contact &amp; Portal</h4>
+                <ul class="text-xs space-y-1.5">
+                    <li><strong class="text-slate-300">Tel:</strong> +603-8688 1900</li>
+                    <li><strong class="text-slate-300">Fax:</strong> +603-8688 1911</li>
+                    <li><strong class="text-slate-300">Website:</strong> <a href="https://www.mqa.gov.my" target="_blank" rel="noopener noreferrer" class="text-teal-400 hover:underline">www.mqa.gov.my</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-8 pt-6 border-t border-slate-800 text-xs text-center text-slate-500">
+            © Malaysian Qualifications Agency 2019 • Interactive Digital Reference Portal generated from Notebook Sources.
+        </div>
+    </footer>
+
+    <!-- Modal: Foreword & Document Overview -->
+    <div id="forewordModal" class="fixed inset-0 z-50 hidden bg-slate-950/60 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="bg-white rounded-3xl max-w-2xl w-full p-6 sm:p-8 shadow-2xl border border-slate-200 max-h-[90vh] overflow-y-auto">
+            <div class="flex items-start justify-between gap-4 mb-4">
+                <div>
+                    <span class="text-xs font-bold uppercase tracking-wider text-teal-700 bg-teal-50 px-2.5 py-1 rounded-full">Page ii • Official Foreword</span>
+                    <h3 class="font-display text-xl font-bold text-slate-900 mt-2">Foreword to COPPA: ODL (Second Edition)</h3>
+                </div>
+                <button onclick="closeModal('forewordModal')" class="p-2 rounded-lg text-slate-400 hover:text-slate-700 hover:bg-slate-100">
+                    <i data-lucide="x" class="w-5 h-5"></i>
+                </button>
+            </div>
+            <div class="space-y-4 text-sm text-slate-600 leading-relaxed">
+                <p>
+                    With the advent of technology, higher education institutions are no longer confined to the traditional brick and mortar learning and teaching methods. Open and Distance Learning (ODL) is gaining its momentum and is the new frontier of learning which will revolutionise the landscape of higher education. ODL presents a potpourri of benefits where it transforms education to be more flexible and accessible to meet the needs of the 21st century learners.
+                </p>
+                <p>
+                    As the number of institutions that will be launching the ODL programmes is expected to increase further in the future, quality assurance of ODL programmes is crucial. Hence to safeguard the integrity and credibility of ODL, the <strong>Code of Practice for Programme Accreditation: ODL (COPPA: ODL)</strong> has been developed specifically to meet the increasing demand of ODL programmes offered by full-fledged open universities, traditional and dual mode institutions in Malaysia.
+                </p>
+                <p>
+                    The COPPA: ODL contains clear, specific indicators and benchmark standards that will guide the institutions in the development, delivery, assessment as well as the monitoring and review of the ODL programme.
+                </p>
+                <div class="p-4 rounded-2xl bg-slate-50 border border-slate-200 text-xs text-slate-800">
+                    <div class="font-bold text-slate-900">Dato’ Dr. Rahmah Mohamed</div>
+                    <div>Chief Executive Officer, Malaysian Qualifications Agency</div>
+                    <div class="text-slate-500 mt-0.5">November 2019 (Updated: 24 June 2021)</div>
+                </div>
+            </div>
+            <div class="mt-6 text-right">
+                <button onclick="closeModal('forewordModal')" class="px-5 py-2.5 rounded-xl bg-slate-900 text-white text-xs font-semibold hover:bg-slate-800 transition">
+                    Close Window
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript Application Logic & Data -->
+    <script>
+        // --- DATA: THE 7 AREAS OF EVALUATION (Sections 2, 3, 6) ---
+        const evaluationAreas = [
+            {
+                id: 1,
+                code: "Area 1",
+                title: "Programme Development and Delivery",
+                standardsCount: 16,
+                questionsCount: 30,
+                pages: "pp. 4–8, 39–43, 87–89",
+                color: "teal",
+                summary: "Guides academic planning and implementation to produce broadly educated graduates ready for the world of work and active citizenship through Outcome-Based Education (OBE), constructive alignment, and dedicated Self-Instructional Materials (SIM).",
+                subAreas: [
+                    "1.1 Statement of Educational Objectives of Academic Programme and Learning Outcomes",
+                    "1.2 Programme Development: Process, Content, Structure and Learning-Teaching Methods",
+                    "1.3 Programme Delivery"
+                ],
+                standardsHighlights: [
+                    "1.1.1 Consistent with HEP vision, mission, goals & overarching ODL policy in promoting democratisation of education.",
+                    "1.1.2 Considered only after a rigorous Needs Assessment indicates demand for the programme via ODL mode.",
+                    "1.1.3 Constructive alignment between PEO, PLO, student-engaged learning-teaching strategies, and assessment.",
+                    "1.1.4 PLOs must correspond to MQF level descriptors and the 5 clusters of MQF learning outcomes.",
+                    "1.2.1 – 1.2.3 Department has sufficient autonomy, approval by highest academic authority, and stakeholder consultation including education & ODL experts.",
+                    "1.2.5 Integrated interaction mechanism, provision of Self-Instructional Materials (SIM) for self-directed learners, dedicated SIM design/development unit, and clear adopt/adapt/create IPR & licensing policies.",
+                    "1.3.3 – 1.3.5 Full-time programme leader/coordinator, conducive virtual & physical practical environments, and learning analytics tools to monitor student activities."
+                ],
+                hepSubmission: [
+                    "Outline the overarching ODL policy of the HEP and map PLOs to MQF level descriptors & 5 clusters (Table 1).",
+                    "Detail the dedicated unit for SIM design/development, copyright/licensing policies, online learning platform, and synchronous/asynchronous interaction modes.",
+                    "Provide complete course breakdown (Tables 2, 3, 4) and evidence of learning analytics tools used to track student engagement."
+                ],
+                poaEvaluation: [
+                    "Verify methodology and outcomes of the needs assessment, demand, and feasibility for ODL delivery.",
+                    "Inspect SIM readiness: Semester 1 SIM required for Provisional Accreditation; ALL courses SIM required for Full Accreditation (3.1.2.5b).",
+                    "Evaluate the establishment and roles of the dedicated SIM development unit and effectiveness of student feedback loops."
+                ]
+            },
+            {
+                id: 2,
+                code: "Area 2",
+                title: "Assessment of Student Learning",
+                standardsCount: 11,
+                questionsCount: 16,
+                pages: "pp. 9–11, 44–45, 90–91",
+                color: "blue",
+                summary: "Ensures assessment methods are clear, consistent, effective, reliable, and aligned with MQF levels, supported by robust security, academic integrity, qualified moderation, and provisions for geographically distributed ODL learners.",
+                subAreas: [
+                    "2.1 Relationship between Assessment and Learning Outcomes",
+                    "2.2 Assessment Methods",
+                    "2.3 Management of Student Assessment"
+                ],
+                standardsHighlights: [
+                    "2.1.1 – 2.1.2 Assessment principles, methods, and practices must be aligned to MQF learning outcomes and systematically/regularly reviewed.",
+                    "2.2.1 Variety of summative and formative assessment methods and innovative tools used appropriately to measure competencies.",
+                    "2.2.2 Policies and mechanisms ensuring security, credibility, validity, reliability, consistency, currency, and fairness—with specific procedures for distant locations and simultaneous multi-site processes.",
+                    "2.2.3 – 2.3 Clear communication of assessment criteria/grading to students, moderation by qualified moderators, and secure management of online & physical assessments."
+                ],
+                hepSubmission: [
+                    "Explain how constructive alignment between assessment and PLOs is systematically reviewed.",
+                    "Demonstrate utilisation of both formative and summative assessments tailored to an online ecosystem.",
+                    "Document security, academic integrity verification, moderation processes, and multi-location examination administration."
+                ],
+                poaEvaluation: [
+                    "Comment on the alignment between assessment, learning outcomes, and MQF level.",
+                    "Evaluate the effectiveness of policies governing online assessment integrity, qualified moderators, and simultaneous multi-site examination security."
+                ]
+            },
+            {
+                id: 3,
+                code: "Area 3",
+                title: "Student Selection and Support Services",
+                standardsCount: 18,
+                questionsCount: 27,
+                pages: "pp. 11–15, 46–49, 92–93",
+                color: "indigo",
+                summary: "Addresses transparent student admission, APEL & credit transfer, and comprehensive technical, academic, and personal support services essential for ODL learners across main campuses and Regional Centres.",
+                subAreas: [
+                    "3.1 Student Selection",
+                    "3.2 Articulation and Transfer",
+                    "3.3 Student Support Services",
+                    "3.4 Student Representation and Participation",
+                    "3.5 Alumni"
+                ],
+                standardsHighlights: [
+                    "3.1 Clear, explicit criteria and policies for student selection, including APEL (Accreditation of Prior Experiential Learning) where applicable.",
+                    "3.2 Well-defined policies and mechanisms for articulation, credit transfer, and student mobility.",
+                    "3.3 Holistic technical, academic, and counseling support tailored to ODL challenges; immediate and personal interactions with academic staff via the online platform.",
+                    "3.4 Student representation and participation in co-curricular activities to enrich experience and foster responsibility.",
+                    "3.5.1 Active linkages with alumni to develop, review, and continuously improve the programme."
+                ],
+                hepSubmission: [
+                    "Provide entry requirements, selection criteria, and APEL/credit transfer mechanisms.",
+                    "Describe technical helpdesk, digital orientation, academic advising, counselling, and support available at Regional Centres (RCs).",
+                    "Show evidence of student representation and active alumni involvement in programme review."
+                ],
+                poaEvaluation: [
+                    "Verify compliance of admission criteria and readiness of ODL learners for independent technology-mediated study.",
+                    "Assess adequacy and responsiveness of technical, academic, and personal support services across main and regional centres."
+                ]
+            },
+            {
+                id: 4,
+                code: "Area 4",
+                title: "Academic Staff",
+                standardsCount: 14,
+                questionsCount: 23,
+                pages: "pp. 15–18, 50–52, 94–95",
+                color: "emerald",
+                summary: "Governs recruitment of qualified academic staff, appropriate staff-student ratios, the mandatory ≥60% full-time staff benchmark, equitable workload, merit-based ODL innovation incentives, and continuous ODL training (CPD).",
+                subAreas: [
+                    "4.1 Recruitment and Management",
+                    "4.2 Service and Development"
+                ],
+                standardsHighlights: [
+                    "4.1.2 Clear recruitment policy based on academic merit from bona fide institutions and diversity of approaches/ODL experience.",
+                    "4.1.3 Appropriate staff (instructor/facilitator/tutor)–student ratio complying with programme standards while considering ODL flexibility.",
+                    "4.1.4 Adequate and qualified academic staff (ODL course coordinator, programme leader, instructor/facilitator/tutor). At least 60% of academic staff in a specific programme (only inclusive of course coordinator) MUST be employed on a full-time basis.",
+                    "4.1.5 – 4.1.6 Equitable workload distribution (including online facilitation) and transparent, merit-based recognition/incentives to reward innovation in ODL.",
+                    "4.1.7 – 4.1.8 National/international linkages and mandatory ODL Continuous Professional Development (CPD) training for all full-time and part-time staff."
+                ],
+                hepSubmission: [
+                    "Complete Table 5 (Summary information on academic staff / course coordinators) proving the ≥60% full-time requirement.",
+                    "State policy on part-time academics (qualifications, specialisation, workload) and mechanisms for verifying bona fide qualifications.",
+                    "Detail ODL-specific CPD training programmes and incentives rewarding ODL pedagogical innovation."
+                ],
+                poaEvaluation: [
+                    "Verify that at least 60% of course coordinators in the programme are full-time staff and assess part-time tutor management.",
+                    "Evaluate transparency of merit-based promotion/remuneration policies and effectiveness of ODL training for full-time and part-time staff."
+                ]
+            },
+            {
+                id: 5,
+                code: "Area 5",
+                title: "Educational Resources",
+                standardsCount: 12,
+                questionsCount: 19,
+                pages: "pp. 18–21, 53–56, 96–97",
+                color: "amber",
+                summary: "Ensures adequate physical and virtual infrastructure/infostructure—including LMS/LCMS, bandwidth, data storage, digital libraries, practical labs, R&D support, and financial viability.",
+                subAreas: [
+                    "5.1 Physical Facilities",
+                    "5.2 Research and Development",
+                    "5.3 Financial Resources"
+                ],
+                standardsHighlights: [
+                    "5.1.1 – 5.1.2 Sufficient and appropriate physical and virtual facilities (including practical/clinical labs and special needs provisions) for effective ODL delivery.",
+                    "5.1.3 Appropriate Learning Management System (LMS) / LCMS in place to facilitate ODL delivery, assessment, and data storage.",
+                    "5.1.4 All physical facilities, systems, and eContent must comply with relevant laws, regulations, licensing, and copyright.",
+                    "5.1.5 Library or digital resource centre with adequate, up-to-date reference materials and qualified staff supporting students and staff remotely.",
+                    "5.2 – 5.3 Active research & development (including ODL pedagogy/tech) and sufficient, sustainable financial resources with budgetary autonomy."
+                ],
+                hepSubmission: [
+                    "Furnish Table 6 (Physical and virtual facilities: LMS, bandwidth, data storage, assessment system, studios/labs) and Table 7 (Reference materials).",
+                    "Provide agreements and locations for any external clinical/practical facilities.",
+                    "Show proof of software/eContent copyright & licensing compliance and financial sustainability."
+                ],
+                poaEvaluation: [
+                    "Inspect LMS/LCMS reliability, bandwidth management, data security, and technical infrastructure across main and regional centres.",
+                    "Verify adequacy of digital library access, practical training arrangements, and financial allocation."
+                ]
+            },
+            {
+                id: 6,
+                code: "Area 6",
+                title: "Programme Management",
+                standardsCount: 16,
+                questionsCount: 19,
+                pages: "pp. 21–24, 57–59, 98–100",
+                color: "purple",
+                summary: "Focuses on transparent governance, qualified ODL programme leadership, functional integration across Regional Centres or partner institutions, administrative support staff, and secure academic records.",
+                subAreas: [
+                    "6.1 Programme Management",
+                    "6.2 Programme Leadership",
+                    "6.3 Administrative Staff",
+                    "6.4 Academic Records"
+                ],
+                standardsHighlights: [
+                    "6.1.1 – 6.1.4 Clear governance structures, policies, and decision-making processes with adequate departmental autonomy.",
+                    "6.1.5 Mechanisms to ensure functional integration and comparability of educational quality for programmes conducted in different Regional Centres (RCs) or partner institutions.",
+                    "6.1.6 Periodic internal and external consultations and graduate employability analyses to ensure currency and market relevance.",
+                    "6.2 Clear criteria for appointing a full-time Programme Leader competent in knowing, developing, implementing, managing, and visioning ODL.",
+                    "6.3 – 6.4 Sufficient trained administrative/technical staff (Table 8) and strict policies on security, retention, preservation, disposal, and privacy/confidentiality of academic records."
+                ],
+                hepSubmission: [
+                    "Describe mechanisms ensuring comparability of quality across Regional Centres or collaborative partner institutions.",
+                    "Detail the qualifications, ODL competencies, and appointment criteria of the Programme Leader and administrative support team (Table 8).",
+                    "Outline policies on student and staff record security, privacy, retention, and disposal."
+                ],
+                poaEvaluation: [
+                    "Evaluate functional integration and quality equivalence across Regional Centres / partner institutions (3.6.1.5).",
+                    "Assess suitability of the Programme Leader, effectiveness of ODL training for administrative/support staff, and security of academic records (3.6.4)."
+                ]
+            },
+            {
+                id: 7,
+                code: "Area 7",
+                title: "Programme Monitoring, Review and Continual Quality Improvement",
+                standardsCount: 9,
+                questionsCount: 15,
+                pages: "pp. 25–27, 60–61, 100–102",
+                color: "rose",
+                summary: "Establishes a dynamic internal quality assurance culture through regular monitoring of ODL systems, SIM, student progression/attrition data, longitudinal studies, and multi-stakeholder engagement.",
+                subAreas: [
+                    "7.1 Mechanisms for Programme Monitoring, Review and Continual Quality Improvement"
+                ],
+                standardsHighlights: [
+                    "7.1.1 – 7.1.2 Clear policies for regular monitoring & review; departmental Quality Assurance (QA) unit/personnel working hand-in-hand with the central HEP QA unit.",
+                    "7.1.3 Internal programme monitoring and review committee with a designated head to continually review content and ODL learning support services.",
+                    "7.1.4 – 7.1.5 Constructive engagement of stakeholders (including ODL/technology experts, alumni, employers) and making the programme review report accessible to stakeholders.",
+                    "7.1.6 Periodic review using benchmarked data (student performance, progression, attrition, graduation, employability), longitudinal studies, and learning technologies.",
+                    "7.1.7 – 7.1.9 Shared monitoring responsibilities in collaborative arrangements; presentation of review findings to the highest academic board; integral link to institutional purpose."
+                ],
+                hepSubmission: [
+                    "Explain how the online system, SIM, assessment, ICT bandwidth, and physical facilities are reviewed periodically (7.1.3e).",
+                    "Provide evidence of benchmarked data analysis (attrition, progression, graduation, employability) and stakeholder feedback loops.",
+                    "Show how programme review findings are presented to the highest academic board and communicated to stakeholders."
+                ],
+                poaEvaluation: [
+                    "Assess the structure and workings of the programme monitoring & review committee and departmental QA unit.",
+                    "Evaluate how student performance, progression, attrition, graduation, and employment data are analysed for Continual Quality Improvement (3.7.1.6)."
+                ]
+            }
+        ];
+
+        // --- DATA: OFFICIAL GLOSSARY TERMS (Pages iii - x) ---
+        const glossaryTerms = [
+            { no: 1, term: "Academic Staff", cat: "Roles & Staff", desc: "Personnel engaged by Higher Education Providers who are involved in teaching, training and supervision." },
+            { no: 3, term: "Administrative Staff", cat: "Roles & Staff", desc: "Non-academic personnel engaged by Higher Education Providers." },
+            { no: 5, term: "APEL", cat: "Assessment & Curriculum", desc: "Accreditation of Prior Experiential Learning: A systematic process that involves the identification, documentation and assessment of prior experiential learning (knowledge, skills and attitudes) to determine the extent to which an individual has achieved the desired learning outcomes for access to a programme of study and/or for the award of credit." },
+            { no: 7, term: "Assessment", cat: "Assessment & Curriculum", desc: "A systematic mechanism to measure a student’s attainment of learning outcomes." },
+            { no: 9, term: "Collaborative Programme", cat: "QA & Accreditation", desc: "Programme offered by a Higher Education Provider but the curriculum is owned, and the award is conferred, by its partner." },
+            { no: 13, term: "Continuous Assessment", cat: "Assessment & Curriculum", desc: "Assessments conducted throughout the duration of a course/module for the purpose of determining student attainment." },
+            { no: 14, term: "Constructive Alignment", cat: "Assessment & Curriculum", desc: "A principle used for devising learning and teaching activities and assessment tasks that are in line with the intended learning outcome." },
+            { no: 17, term: "Course Coordinator", cat: "Roles & Staff", desc: "A full-time academic staff responsible for the individual course content, delivery, assessment, selection of tutor/facilitator/instructor (if any), monitoring and review. Lecturer can also serve as course coordinator." },
+            { no: 24, term: "External Advisor", cat: "Roles & Staff", desc: "An acknowledged expert in the relevant field of study external to the Higher Education Providers, tasked to assist in reviewing the programme." },
+            { no: 25, term: "External Examiner", cat: "Roles & Staff", desc: "An acknowledged expert in the relevant field of study external to the Higher Education Providers, tasked to evaluate the programme’s assessment system and the candidates." },
+            { no: 27, term: "External Stakeholders", cat: "QA & Accreditation", desc: "Parties external to the Higher Education Providers who have interest in the programme. Examples are alumni, industries, parents, collaborators, fund providers and professional associations." },
+            { no: 28, term: "Face-to-face", cat: "ODL & Delivery", desc: "Refers to the actual physical interaction or other electronically mediated communication that displays the learner(s) and tutor/facilitator/instructor in real time enabling immediate response." },
+            { no: 29, term: "Formative Assessment", cat: "Assessment & Curriculum", desc: "The assessment of student’s progress throughout a course, in which the feedback from the learning activities are used to improve student attainment." },
+            { no: 31, term: "Full-time Equivalent (FTE)", cat: "Roles & Staff", desc: "A measure to convert part-time staff workload to full-time equivalent using a normal full-time staff workload. This is only used for the purpose of computing staff-student ratio." },
+            { no: 32, term: "Full-time Staff", cat: "Roles & Staff", desc: "Staff with permanent appointment or contract appointment (minimum one year) who works exclusively for a Higher Education Provider." },
+            { no: 38, term: "Internal Quality Audit", cat: "QA & Accreditation", desc: "A self-review exercise conducted internally by a Higher Education Provider to determine whether it is achieving its goals, to identify strengths and areas of concern, and to enhance quality. Generates a self-review report." },
+            { no: 39, term: "Longitudinal Study", cat: "QA & Accreditation", desc: "A study which involves repeated observations of the same variables or phenomena over a long period of time." },
+            { no: 40, term: "Malaysian Qualifications Framework (MQF)", cat: "QA & Accreditation", desc: "An instrument that classifies qualifications based on a set of criteria that are approved nationally and benchmarked against international best practices." },
+            { no: 42, term: "Moderator", cat: "Roles & Staff", desc: "In the context of ODL, a moderator is an academic staff from the HEP or appointed from any other recognised institution/organization/industry responsible for moderating and refining examination questions or assignments." },
+            { no: 43, term: "Modules/Content Writers", cat: "Roles & Staff", desc: "A member of academic staff from the university or appointed from any other recognised institution/organization/industry, responsible for developing the content of the learning materials." },
+            { no: 44, term: "Needs Assessment", cat: "Assessment & Curriculum", desc: "An analysis carried out to identify needs (e.g., the training needs of staff and the market demand of a programme)." },
+            { no: 45, term: "Open and Distance Learning (ODL)", cat: "ODL & Delivery", desc: "(a) Teaching conducted by someone removed in time and space from the learner with openness and flexibility (UNESCO, 2002). (b) Uses mixed-media courseware, two-way communication, and possible face-to-face meetings (COL, 1999). (c) Education where using learning resources, rather than attending classroom sessions, is the central feature (COL, 2003)." },
+            { no: 50, term: "Programme Accreditation", cat: "QA & Accreditation", desc: "An assessment exercise to determine whether a programme has met the quality standards and is in compliance with the MQF across three stages: Provisional Accreditation, Full Accreditation, and Compliance Evaluation." },
+            { no: 51, term: "Programme Educational Objectives (PEO)", cat: "Assessment & Curriculum", desc: "Broad statements that describe the career and professional accomplishments that the programme is preparing graduates to achieve after they graduated." },
+            { no: 52, term: "Programme Leader/Coordinator", cat: "Roles & Staff", desc: "A full-time academic staff responsible for the overall implementation and management of the programme from the development of the curriculum content, delivery, assessment, delegation of academic staff to manage individual courses, monitoring and review." },
+            { no: 53, term: "Programme Learning Outcomes (PLO)", cat: "Assessment & Curriculum", desc: "Statements that describe the specific and general knowledge, skills, attitude and abilities that the programme graduates should demonstrate upon graduation." },
+            { no: 54, term: "Programme Self-Review Report (PSRR)", cat: "QA & Accreditation", desc: "A report submitted by a Higher Education Provider to demonstrate whether it has achieved the quality standards for purposes of a full accreditation exercise." },
+            { no: 59, term: "Quality Partners", cat: "QA & Accreditation", desc: "Usually better established universities which attest to the quality of a programme through the involvement or oversight of curriculum design, learning and teaching, or assessment." },
+            { no: 60, term: "Regional Centre (RC)", cat: "ODL & Delivery", desc: "A centre established by the main campus to reach out to learners at different regions or countries. Serves as a support centre (or learning centre) with minimum infrastructure approved by MOE." },
+            { no: 67, term: "Synchronous & Asynchronous Learning", cat: "ODL & Delivery", desc: "Synchronous learning happens in real-time where a group of learners are collectively engaged via physical or virtual session. Asynchronous learning is learner-centric, freeing learners from constraints of time and space in delayed electronic mode." },
+            { no: 68, term: "Tutor/Facilitator/Instructor", cat: "Roles & Staff", desc: "An academic staff from the HEP or appointed from any other recognised institution/organization/industry responsible for the learning and teaching process, and conducts physical or virtual face-to-face sessions." }
+        ];
+
+        // --- DATA: READINESS CHECKLIST ITEMS ---
+        const checklistItems = [
+            { id: "c1", text: "Needs Assessment completed confirming market demand for ODL mode (Std 1.1.2)", checked: true },
+            { id: "c2", text: "More than 60% of programme courses are designed for ODL mode (Section 1 Scope)", checked: true },
+            { id: "c3", text: "Each ODL course delivers ≥ 80% of Student Learning Time (SLT) via ODL mode (Section 1 Scope)", checked: true },
+            { id: "c4", text: "Dedicated unit/section established for Self-Instructional Materials (SIM) development (Std 1.2.5)", checked: false },
+            { id: "c5", text: "Semester 1 SIM ready (Provisional) or All Courses SIM ready (Full Accreditation) (Sec 6, 3.1.2.5b)", checked: false },
+            { id: "c6", text: "Full-time Programme Leader/Coordinator appointed with ODL competency (Std 1.3.3 & 6.2)", checked: false },
+            { id: "c7", text: "At least 60% of academic staff (course coordinators) employed full-time (Std 4.1.4)", checked: false },
+            { id: "c8", text: "Online assessment integrity, qualified moderation & multi-location procedures in place (Std 2.2.2)", checked: false },
+            { id: "c9", text: "LMS/LCMS, digital library, bandwidth & eContent copyright compliance verified (Std 5.1.3–5.1.5)", checked: false },
+            { id: "c10", text: "Tables 1 to 8 completed and endorsed for MQA-01-ODL / MQA-02-ODL submission (Sec 3.3)", checked: false }
+        ];
+
+        let activeAreaId = 1;
+        let activeGlossaryCat = "All";
+
+        // --- FUNCTION: ODL THRESHOLD CALCULATOR ---
+        function updateODLCalculator() {
+            const totalCourses = parseInt(document.getElementById('totalCoursesInput').value, 10);
+            let odlCourses = parseInt(document.getElementById('odlCoursesInput').value, 10);
+
+            if (odlCourses > totalCourses) {
+                odlCourses = totalCourses;
+                document.getElementById('odlCoursesInput').value = odlCourses;
+            }
+            document.getElementById('odlCoursesInput').max = totalCourses;
+
+            const progPercent = (odlCourses / totalCourses) * 100;
+            document.getElementById('totalCoursesVal').textContent = `${totalCourses} Courses`;
+            document.getElementById('odlCoursesVal').textContent = `${odlCourses} Courses`;
+            document.getElementById('progPercentText').textContent = `${progPercent.toFixed(1)}%`;
+
+            const minOdlCoursesNeeded = Math.floor(totalCourses * 0.6) + 1;
+            const progBadge = document.getElementById('progStatusBadge');
+            const progAdvice = document.getElementById('progAdviceText');
+
+            if (progPercent > 60) {
+                progBadge.textContent = "Qualifies as ODL (>60%)";
+                progBadge.className = "shrink-0 px-3 py-1 rounded-full text-xs font-bold bg-emerald-100 text-emerald-800 border border-emerald-200";
+                progAdvice.textContent = `Meets COPPA: ODL scope (minimum ${minOdlCoursesNeeded} of ${totalCourses} courses required).`;
+            } else {
+                progBadge.textContent = "Below >60% Threshold";
+                progBadge.className = "shrink-0 px-3 py-1 rounded-full text-xs font-bold bg-rose-100 text-rose-800 border border-rose-200";
+                progAdvice.textContent = `Requires strictly >60% (${minOdlCoursesNeeded} of ${totalCourses} courses) to be deemed an ODL programme.`;
+            }
+
+            // Course SLT Calculation
+            const totalSlt = parseInt(document.getElementById('totalSltInput').value, 10);
+            let odlSlt = parseInt(document.getElementById('odlSltInput').value, 10);
+            const isExempt = document.getElementById('exemptionCheck').checked;
+
+            if (odlSlt > totalSlt) {
+                odlSlt = totalSlt;
+                document.getElementById('odlSltInput').value = odlSlt;
+            }
+            document.getElementById('odlSltInput').max = totalSlt;
+
+            const creditsApprox = (totalSlt / 40).toFixed(0);
+            const coursePercent = (odlSlt / totalSlt) * 100;
+            const minOdlSltNeeded = Math.ceil(totalSlt * 0.8);
+
+            document.getElementById('totalSltVal').textContent = `${totalSlt} Hours (~${creditsApprox} Credits)`;
+            document.getElementById('odlSltVal').textContent = `${odlSlt} Hours`;
+            document.getElementById('coursePercentText').textContent = `${coursePercent.toFixed(1)}%`;
+
+            const courseBadge = document.getElementById('courseStatusBadge');
+            const courseAdvice = document.getElementById('courseAdviceText');
+
+            if (coursePercent >= 80) {
+                courseBadge.textContent = "ODL Course Valid (≥80%)";
+                courseBadge.className = "shrink-0 px-3 py-1 rounded-full text-xs font-bold bg-emerald-100 text-emerald-800 border border-emerald-200";
+                courseAdvice.textContent = `Meets the ≥80% ODL SLT requirement (minimum ${minOdlSltNeeded} hrs of ${totalSlt} hrs).`;
+            } else if (isExempt) {
+                courseBadge.textContent = "Exempted (Regulatory F2F)";
+                courseBadge.className = "shrink-0 px-3 py-1 rounded-full text-xs font-bold bg-amber-100 text-amber-800 border border-amber-200";
+                courseAdvice.textContent = `Exempted under Footnote 1 due to specific regulatory/clinical physical face-to-face contact hour requirements.`;
+            } else {
+                courseBadge.textContent = "Below ≥80% SLT Rule";
+                courseBadge.className = "shrink-0 px-3 py-1 rounded-full text-xs font-bold bg-rose-100 text-rose-800 border border-rose-200";
+                courseAdvice.textContent = `Needs at least ${minOdlSltNeeded} hrs (80%) via ODL mode unless regulatory exemption applies.`;
+            }
+        }
+
+        // --- FUNCTION: RENDER 7 EVALUATION AREAS ---
+        function selectArea(id) {
+            activeAreaId = id;
+            renderAreaSelector();
+            renderActiveAreaDetail();
+        }
+
+        function renderAreaSelector() {
+            const grid = document.getElementById('areaSelectorGrid');
+            grid.innerHTML = evaluationAreas.map(area => {
+                const isActive = area.id === activeAreaId;
+                return `
+                    <button onclick="selectArea(${area.id})" class="text-left p-3 rounded-xl border transition-all ${
+                        isActive 
+                        ? 'bg-slate-900 text-white border-slate-900 shadow-md ring-2 ring-teal-500/40' 
+                        : 'bg-slate-50 hover:bg-slate-100 text-slate-700 border-slate-200/80'
+                    }">
+                        <div class="flex items-center justify-between text-xs font-bold mb-1">
+                            <span class="${isActive ? 'text-teal-400' : 'text-slate-500'}">${area.code}</span>
+                            <span class="px-1.5 py-0.5 rounded text-[10px] ${isActive ? 'bg-white/15 text-white' : 'bg-slate-200 text-slate-700'}">${area.standardsCount} Stds</span>
+                        </div>
+                        <div class="font-display font-bold text-xs line-clamp-2 leading-snug">${area.title}</div>
+                        <div class="mt-2 text-[10px] ${isActive ? 'text-slate-300' : 'text-slate-400'}">${area.questionsCount} Part C Prompts</div>
+                    </button>
+                `;
+            }).join('');
+        }
+
+        function renderActiveAreaDetail() {
+            const area = evaluationAreas.find(a => a.id === activeAreaId);
+            const container = document.getElementById('activeAreaContainer');
+
+            container.innerHTML = `
+                <div class="bg-slate-900 text-white p-6 sm:p-8 flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+                    <div>
+                        <div class="flex flex-wrap items-center gap-2 text-xs font-semibold text-teal-400 mb-1">
+                            <span>${area.code} of 7</span>
+                            <span>•</span>
+                            <span>Document Reference: ${area.pages}</span>
+                        </div>
+                        <h3 class="font-display text-xl sm:text-2xl font-extrabold">${area.code}: ${area.title}</h3>
+                        <p class="text-xs sm:text-sm text-slate-300 mt-2 max-w-3xl leading-relaxed">${area.summary}</p>
+                    </div>
+                    <div class="flex items-center gap-3 shrink-0">
+                        <div class="bg-white/10 border border-white/15 rounded-2xl px-4 py-3 text-center">
+                            <div class="font-display text-2xl font-extrabold text-teal-400">${area.standardsCount}</div>
+                            <div class="text-[11px] uppercase tracking-wider text-slate-300 font-semibold">Standards</div>
+                        </div>
+                        <div class="bg-white/10 border border-white/15 rounded-2xl px-4 py-3 text-center">
+                            <div class="font-display text-2xl font-extrabold text-amber-400">${area.questionsCount}</div>
+                            <div class="text-[11px] uppercase tracking-wider text-slate-300 font-semibold">Part C Items</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sub-areas bar -->
+                <div class="bg-slate-100 px-6 py-3 border-b border-slate-200 flex flex-wrap items-center gap-2">
+                    <span class="text-xs font-bold uppercase text-slate-500 mr-1">Sub-Areas:</span>
+                    ${area.subAreas.map(sub => `
+                        <span class="px-2.5 py-1 rounded-lg bg-white border border-slate-200/80 text-xs font-semibold text-slate-800">${sub}</span>
+                    `).join('')}
+                </div>
+
+                <!-- 3 Columns: Standards (Sec 2), HEP Submission (Sec 3), POA Evaluation (Sec 6) -->
+                <div class="p-6 sm:p-8 grid grid-cols-1 lg:grid-cols-12 gap-8">
+                    <!-- Section 2 Standards -->
+                    <div class="lg:col-span-6 space-y-3">
+                        <div class="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-teal-700">
+                            <i data-lucide="shield-check" class="w-4 h-4"></i>
+                            <span>Section 2 • Key Standards &amp; Benchmarks</span>
+                        </div>
+                        <ul class="space-y-2.5">
+                            ${area.standardsHighlights.map(std => `
+                                <li class="p-3.5 rounded-xl bg-slate-50 border border-slate-200/80 text-xs text-slate-700 leading-relaxed flex items-start gap-2.5">
+                                    <span class="w-2 h-2 rounded-full bg-teal-600 shrink-0 mt-1.5"></span>
+                                    <span>${std}</span>
+                                </li>
+                            `).join('')}
+                        </ul>
+                    </div>
+
+                    <!-- Section 3 HEP Submission & Section 6 POA Evaluation -->
+                    <div class="lg:col-span-6 space-y-6">
+                        <div class="p-5 rounded-2xl bg-blue-50/60 border border-blue-200/80">
+                            <div class="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-blue-800 mb-3">
+                                <i data-lucide="file-text" class="w-4 h-4"></i>
+                                <span>Section 3 (Part C) • HEP Submission Evidence (${area.questionsCount} Prompts)</span>
+                            </div>
+                            <ul class="space-y-2 text-xs text-slate-700">
+                                ${area.hepSubmission.map(item => `
+                                    <li class="flex items-start gap-2">
+                                        <span class="font-bold text-blue-700">→</span>
+                                        <span>${item}</span>
+                                    </li>
+                                `).join('')}
+                            </ul>
+                        </div>
+
+                        <div class="p-5 rounded-2xl bg-amber-50/60 border border-amber-200/80">
+                            <div class="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-amber-900 mb-3">
+                                <i data-lucide="clipboard-check" class="w-4 h-4"></i>
+                                <span>Section 6 • Panel of Assessors (POA) Report Focus</span>
+                            </div>
+                            <ul class="space-y-2 text-xs text-slate-700">
+                                ${area.poaEvaluation.map(item => `
+                                    <li class="flex items-start gap-2">
+                                        <span class="font-bold text-amber-700">✓</span>
+                                        <span>${item}</span>
+                                    </li>
+                                `).join('')}
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            `;
+            lucide.createIcons();
+        }
+
+        // --- FUNCTION: RENDER CHECKLIST ---
+        function renderChecklist() {
+            const container = document.getElementById('checklistContainer');
+            container.innerHTML = checklistItems.map((item, idx) => `
+                <label class="flex items-start gap-3 p-2.5 rounded-xl border cursor-pointer transition select-none ${
+                    item.checked ? 'bg-emerald-50/50 border-emerald-200 text-slate-900' : 'bg-slate-50 border-slate-200/70 text-slate-600 hover:bg-slate-100'
+                }">
+                    <input type="checkbox" ${item.checked ? 'checked' : ''} onchange="toggleChecklistItem(${idx})" class="mt-0.5 w-4 h-4 rounded text-teal-600 focus:ring-teal-500">
+                    <span class="text-xs font-medium leading-snug ${item.checked ? 'line-through text-slate-500' : 'text-slate-800'}">${item.text}</span>
+                </label>
+            `).join('');
+
+            const completed = checklistItems.filter(i => i.checked).length;
+            const total = checklistItems.length;
+            const pct = Math.round((completed / total) * 100);
+
+            document.getElementById('checklistProgress').style.width = `${pct}%`;
+            document.getElementById('checklistSummaryText').textContent = `${completed} of ${total} Readiness Criteria Checked (${pct}%)`;
+
+            const badge = document.getElementById('checklistBadge');
+            if (completed === total) {
+                badge.textContent = "Ready for Submission";
+                badge.className = "px-3 py-1 rounded-full text-xs font-bold bg-emerald-100 text-emerald-800";
+            } else if (completed >= 5) {
+                badge.textContent = "Good Progress";
+                badge.className = "px-3 py-1 rounded-full text-xs font-bold bg-blue-100 text-blue-800";
+            } else {
+                badge.textContent = "In Preparation";
+                badge.className = "px-3 py-1 rounded-full text-xs font-bold bg-amber-100 text-amber-800";
+            }
+        }
+
+        function toggleChecklistItem(idx) {
+            checklistItems[idx].checked = !checklistItems[idx].checked;
+            renderChecklist();
+        }
+
+        function resetChecklist() {
+            checklistItems.forEach(item => item.checked = false);
+            renderChecklist();
+        }
+
+        // --- FUNCTION: RENDER GLOSSARY ---
+        function setGlossaryCat(cat) {
+            activeGlossaryCat = cat;
+            document.querySelectorAll('.gloss-cat-btn').forEach(btn => {
+                if (btn.dataset.cat === cat) {
+                    btn.className = "gloss-cat-btn px-3.5 py-2 rounded-xl text-xs font-semibold bg-slate-900 text-white shrink-0 transition";
+                } else {
+                    btn.className = "gloss-cat-btn px-3.5 py-2 rounded-xl text-xs font-semibold bg-slate-100 text-slate-700 hover:bg-slate-200 shrink-0 transition";
+                }
+            });
+            renderGlossary();
+        }
+
+        function renderGlossary() {
+            const query = document.getElementById('glossarySearch').value.toLowerCase().trim();
+            const grid = document.getElementById('glossaryGrid');
+
+            const filtered = glossaryTerms.filter(item => {
+                const matchesCat = activeGlossaryCat === "All" || item.cat === activeGlossaryCat;
+                const matchesQuery = !query || item.term.toLowerCase().includes(query) || item.desc.toLowerCase().includes(query);
+                return matchesCat && matchesQuery;
+            });
+
+            if (filtered.length === 0) {
+                grid.innerHTML = `
+                    <div class="col-span-full bg-white p-8 rounded-2xl border border-slate-200 text-center text-slate-500 text-sm">
+                        No glossary terms match your filter. Try clearing the search box.
+                    </div>
+                `;
+                return;
+            }
+
+            grid.innerHTML = filtered.map(item => `
+                <div class="bg-white rounded-2xl p-5 border border-slate-200/80 shadow-sm hover:shadow-md transition flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center justify-between gap-2 mb-2">
+                            <span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider bg-slate-100 text-slate-600">${item.cat}</span>
+                            <span class="text-[11px] font-mono text-slate-400">Term #${item.no}</span>
+                        </div>
+                        <h4 class="font-display font-bold text-base text-slate-900 mb-1.5">${item.term}</h4>
+                        <p class="text-xs text-slate-600 leading-relaxed">${item.desc}</p>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // --- UI UTILITIES ---
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobileMenu');
+            menu.classList.toggle('hidden');
+        }
+
+        function openModal(id) {
+            document.getElementById(id).classList.remove('hidden');
+        }
+
+        function closeModal(id) {
+            document.getElementById(id).classList.add('hidden');
+        }
+
+        // Initialize on load
+        window.addEventListener('DOMContentLoaded', () => {
+            lucide.createIcons();
+            updateODLCalculator();
+            renderAreaSelector();
+            renderActiveAreaDetail();
+            renderChecklist();
+            renderGlossary();
+        });
+    </script>
+</body>
+</html>
